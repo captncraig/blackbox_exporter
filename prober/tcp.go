@@ -30,7 +30,7 @@ import (
 
 func dialTCP(ctx context.Context, target string, module config.Module, registry *prometheus.Registry, logger log.Logger) (net.Conn, error) {
 	var dialProtocol, dialTarget string
-	dialer := &net.Dialer{}
+	dialer := Dialer()
 	targetAddress, port, err := net.SplitHostPort(target)
 	if err != nil {
 		level.Error(logger).Log("msg", "Error splitting target address and port", "err", err)

@@ -15,6 +15,7 @@ package prober
 
 import (
 	"context"
+	"net"
 
 	"github.com/go-kit/log"
 	"github.com/prometheus/client_golang/prometheus"
@@ -23,3 +24,5 @@ import (
 )
 
 type ProbeFn func(ctx context.Context, target string, config config.Module, registry *prometheus.Registry, logger log.Logger) bool
+
+var Dialer func() *net.Dialer = func() *net.Dialer { return &net.Dialer{} }

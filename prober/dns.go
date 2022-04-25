@@ -240,7 +240,7 @@ func ProbeDNS(ctx context.Context, target string, module config.Module, registry
 			return false
 		}
 		level.Info(logger).Log("msg", "Using local address", "srcIP", srcIP)
-		client.Dialer = &net.Dialer{}
+		client.Dialer = Dialer()
 		if module.DNS.TransportProtocol == "tcp" {
 			client.Dialer.LocalAddr = &net.TCPAddr{IP: srcIP}
 		} else {
