@@ -360,7 +360,8 @@ func ProbeHTTP(ctx context.Context, target string, module config.Module, registr
 	}
 
 	httpClientConfig.TLSConfig.ServerName = ""
-	noServerName, err := pconfig.NewRoundTripperFromConfig(httpClientConfig, "http_probe", pconfig.WithKeepAlivesDisabled())
+	dialer := Dialer()
+	noServerName, err := pconfig.NewRoundTripperFromConfig(httpClientConfig, "http_probe", pconfig.WithKeepAlivesDisabled(), pconfig.WithDialContextFunc(dialer.DialContext))
 	if err != nil {
 		level.Error(logger).Log("msg", "Error generating HTTP client without ServerName", "err", err)
 		return false
