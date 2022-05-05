@@ -25,4 +25,7 @@ import (
 
 type ProbeFn func(ctx context.Context, target string, config config.Module, registry *prometheus.Registry, logger log.Logger) bool
 
+// Dialer is a function that creates a net.Dialer for a connection.
+// By default it returns an empty net.Dialer, but if a client of this library wishes to
+// implement specific dialer behavior, it may override this.
 var Dialer func() *net.Dialer = func() *net.Dialer { return &net.Dialer{} }
