@@ -353,14 +353,15 @@ func ProbeHTTP(ctx context.Context, target string, module config.Module, registr
 			}
 		}
 	}
-	client, err := pconfig.NewClientFromConfig(httpClientConfig, "http_probe", pconfig.WithKeepAlivesDisabled())
+	dialer := Dialer()
+	client, err := pconfig.NewClientFromConfig(httpClientConfig, "http_probe", pconfig.WithKeepAlivesDisabled(), pconfig.WithDialContextFunc(dialer.DialContext))
 	if err != nil {
 		level.Error(logger).Log("msg", "Error generating HTTP client", "err", err)
 		return false
 	}
 
 	httpClientConfig.TLSConfig.ServerName = ""
-	dialer := Dialer()
+
 	noServerName, err := pconfig.NewRoundTripperFromConfig(httpClientConfig, "http_probe", pconfig.WithKeepAlivesDisabled(), pconfig.WithDialContextFunc(dialer.DialContext))
 	if err != nil {
 		level.Error(logger).Log("msg", "Error generating HTTP client without ServerName", "err", err)
